@@ -1,0 +1,229 @@
+3. Yêu cầu bài toán 
+Sử dụng Web Framework Python FastAPI để hiện thực hóa các yêu cầu sau (Để tập trung vào Module này, dữ liệu User và Vai trò có thể được hardcode hoặc đính kèm giả lập trong request):
+
+Phần 1: Thiết lập Hệ thống Vai trò 
+Định nghĩa hệ thống gồm 3 vai trò (Roles) với cấp độ quyền hạn từ thấp đến cao:
+
+ADMIN (Quản trị viên): Quyền tối cao, truy cập mọi API.
+HR (Nhân sự): Quyền quản lý thông tin nhân viên, bảng lương.
+STAFF (Nhân viên thường): Chỉ có quyền xem thông tin cá nhân.
+Phần 2: Xây dựng Middleware Phân quyền 
+Viết một Custom Middleware (hoặc lớp bảo vệ Decorator/Dependency tập trung) để chặn tất cả các request đến các route cần bảo vệ.
+Middleware phải thực hiện nhiệm vụ:
+Bóc tách thông tin vai trò từ Request (Có thể đọc từ Header tự định nghĩa X-User-Role hoặc trích xuất từ dữ liệu giả lập).
+So khớp vai trò của người dùng với quyền hạn yêu cầu của API Endpoint đó.
+Nếu vai trò hợp lệ -> Cho phép Request đi tiếp.
+Nếu vai trò không hợp lệ -> Chặn đứng request ngay tại Middleware và trả về mã lỗi 403 Forbidden cùng thông báo JSON: {"error": "Permission Denied"}.
+Phần 3: Xây dựng các API Endpoint thử nghiệm
+GET /api/v1/salary/modify => Chỉ cho phép vai trò ADMIN và HR truy cập.
+GET /api/v1/system/settings => Chỉ duy nhất vai trò ADMIN được truy cập.
+GET /api/v1/profile => Cả 3 vai trò ADMIN, HR, STAFF đều truy cập được.
+Phần 4: Cấu hình CORS nghiêm ngặt
+Tích hợp và cấu hình CORS Policy cho ứng dụng Backend của bạn.
+Ràng buộc cấu hình:
+Tuyệt đối không dùng dấu sao (*).
+Chỉ cho phép domain Frontend chính thức của công ty: (https://internal.megamart.com) truy cập.
+Chỉ cho phép các HTTP Methods: GET, POST.
+Cho phép các Headers: Content-Type, X-User-Role.
+4. Tài liệu bàn giao yêu cầu 
+Học viên cần nộp các thành phần sau:
+
+Mã nguồn Python: File chứa logic thiết lập ứng dụng, mã nguồn Custom Middleware phân quyền và đoạn code cấu hình CORS.
+File cấu hình phụ: requirements.txt.
+Kịch bản kiểm thử (Test Cases) bằng Text hoặc Ảnh chụp:
+Test Phân quyền: Minh chứng khi gửi request với Header X-User-Role: STAFF vào API /api/v1/system/settings thì nhận về lỗi 403. Khi gửi với vai trò ADMIN thì nhận về 200 OK.
+Test CORS: Ghi lại log hoặc kết quả giả lập khi gửi request từ một Origin không hợp lệ (Ví dụ: Origin: (https://evil-attacker.xyz)) sẽ bị hệ thống từ chối hoặc không trả về các header CORS hợp lệ (Access-Control-Allow-Origin).
+
+Nộp bài
+
+Danh sách bài học
+
+📊
+25/25 Bài học
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
